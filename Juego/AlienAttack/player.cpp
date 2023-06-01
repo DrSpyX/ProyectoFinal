@@ -1,4 +1,4 @@
-#include "player.h"
+﻿#include "player.h"
 
 player::player(float _x, float _y, QObject *parent) : QObject(parent)
 {
@@ -14,6 +14,7 @@ player::player(float _x, float _y, QObject *parent) : QObject(parent)
 
     pixelX = 0;
     pixelY = 0;
+
 
     pixmap = new QPixmap(":/sprites/Astronauta.png");
 
@@ -31,28 +32,44 @@ player::~player()
 
 void player::animacion()
 {
-    if(direccion == 1){ //derecha
+    if(direccion == 1 && vx == 0){   //derecha estatico
+        pixelX = 0;
+        pixelY = 100;
+    }
+    if(direccion == 2 && vx == 0){   //izquierda estatico
+        pixelX = 0;
+        pixelY = 200;
+    }
+    if(direccion == 3 && vy == 0){   //abajo estatico
+        pixelX = 0;
+        pixelY = 0;
+    }
+    if(direccion == 4 && vy == 0){   //arriba estatico
+        pixelX = 0;
+        pixelY = 300;
+    }
+    if(direccion == 1 && vx > 0){   //derecha movimiento
         pixelX = 100;
         pixelY += 100;
         if(pixelY >= 800){
             pixelY = 0;
         }
     }
-    if(direccion == 2){ //izquierda
+    if(direccion == 2 && vx < 0){   //izquierda movimiento
         pixelX = 200;
         pixelY += 100;
         if(pixelY >= 800){
             pixelY = 0;
         }
     }
-    if(direccion == 3){ //abajo
+    if(direccion == 3 && vy > 0){   //abajo movimiento
         pixelX = 300;
         pixelY += 100;
         if(pixelY >= 800){
             pixelY = 0;
         }
     }
-    if(direccion == 4){ //arriba
+    if(direccion == 4 && vy < 0){   //arriba movimiento
         pixelX = 400;
         pixelY += 100;
         if(pixelY >= 800){

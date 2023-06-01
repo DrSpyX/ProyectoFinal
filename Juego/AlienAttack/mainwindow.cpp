@@ -11,15 +11,25 @@ MainWindow::MainWindow(QWidget *parent)
     moverRx=false;
     moverUy=false;
     moverDy=false;
+    moverdash=false;
+    activardash=false;
 
-    gameScene=new QGraphicsScene(0,0,500,320);
+    gameScene= new QGraphicsScene(0,0,500,320);
     ui->graphicsView->setScene(gameScene);
 
-    timer=new QTimer();
+    timerAnimar= new QTimer();
 
-    connect(timer,SIGNAL(timeout()),this,SLOT(animar()));
+    connect(timerAnimar,SIGNAL(timeout()),this,SLOT(animar()));
 
-    timer->start(16);
+    timerAnimar->start(16);
+
+    timerCooldown= new QTimer();
+
+    connect(timerCooldown,SIGNAL(timeout()),this,SLOT(cooldown()));
+
+    timerCooldown->start(1000);
+
+    cooldowndash = 0;
 
     P1 = new player(300,150);
     gameScene->addItem(P1);
@@ -32,64 +42,112 @@ MainWindow::~MainWindow()
 
 void MainWindow::animar()
 {
-    if(moverLx)
-    {
-        P1->ax = 10;
-        P1->setDireccion(2);
-        P1->velocidadesN();
-    }
-    else
-    {
-        if(P1->vx < 0)
-            P1->ax = -20;
-        else
-            P1->ax = 0;
-        P1->velocidadesN();
-    }
     if(moverRx)
     {
-        P1->ax = 10;
+        if(P1->vx > 20)
+            P1->ax = 0;
+        else
+            P1->ax = 10;
         P1->setDireccion(1);
         P1->velocidadesP();
     }
     else
     {
         if(P1->vx > 0)
-            P1->ax = -20;
+            P1->ax = -10;
         else
             P1->ax = 0;
         P1->velocidadesP();
     }
-    if(moverUy)
+    if(moverLx)
     {
-        P1->ay = 10;
-        P1->setDireccion(4);
+        if(P1->vx < -20)
+            P1->ax = 0;
+        else
+            P1->ax = 10;
+        P1->setDireccion(2);
         P1->velocidadesN();
     }
     else
     {
-        if(P1->vy < 0)
-            P1->ay = -20;
+        if(P1->vx < 0)
+            P1->ax = -10;
         else
-            P1->ay = 0;
+            P1->ax = 0;
         P1->velocidadesN();
     }
     if(moverDy)
     {
-        P1->ay = 10;
+        if(P1->vy > 20)
+            P1->ay = 0;
+        else
+            P1->ay = 10;
         P1->setDireccion(3);
         P1->velocidadesP();
     }
     else
     {
         if(P1->vy > 0)
-            P1->ay = -20;
+            P1->ay = -10;
         else
             P1->ay = 0;
         P1->velocidadesP();
     }
-
+    if(moverUy)
+    {
+        if(P1->vy < -20)
+            P1->ay = 0;
+        else
+            P1->ay = 10;
+        P1->setDireccion(4);
+        P1->velocidadesN();
+    }
+    else
+    {
+        if(P1->vy < 0)
+            P1->ay = -10;
+        else
+            P1->ay = 0;
+        P1->velocidadesN();
+    }
+    if(activardash)
+    {
+        if(P1->direccion==1)
+        {
+            P1->ax = 200;
+            P1->velocidadesP();
+        }
+        if(P1->direccion==2)
+        {
+            P1->ax = 200;
+            P1->velocidadesN();
+        }
+        if(P1->direccion==3)
+        {
+            P1->ay = 200;
+            P1->velocidadesP();
+        }
+        if(P1->direccion==4)
+        {
+            P1->ay = 200;
+            P1->velocidadesN();
+        }
+        activardash = false;
+    }
     P1->posiciones();
+}
+
+void MainWindow::cooldown()
+{
+    if(moverdash && cooldowndash==0)
+    {
+        activardash = true;
+        cooldowndash = 10;
+    }
+    P1->posiciones();
+    if(cooldowndash>0)
+        cooldowndash--;
+    ui->lcdNumber->display(cooldowndash);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *ev)
@@ -110,6 +168,10 @@ void MainWindow::keyPressEvent(QKeyEvent *ev)
     {
         moverDy=true;
     }
+    else if(ev->key()==Qt::Key_Space)
+    {
+        moverdash=true;
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *ev)
@@ -129,5 +191,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *ev)
     else if(ev->key()==Qt::Key_S)
     {
         moverDy=false;
+    }
+    else if(ev->key()==Qt::Key_Space)
+    {
+        moverdash=false;
     }
 }

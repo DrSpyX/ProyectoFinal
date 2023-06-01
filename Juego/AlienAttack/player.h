@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define DT 0.1
+#define DT 0.2
 
 #include <QGraphicsItem>
 #include <QPainter>

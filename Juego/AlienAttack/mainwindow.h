@@ -20,17 +20,23 @@ public:
 
 public slots:
     void animar();
+    void cooldown();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* gameScene;
-    QTimer *timer;
+    QTimer *timerAnimar;
+    QTimer *timerCooldown;
     player* P1;
+
+    int cooldowndash;
 
     bool moverLx;
     bool moverRx;
     bool moverUy;
     bool moverDy;
+    bool moverdash;
+    bool activardash;
 
     void keyPressEvent(QKeyEvent *ev);
     void keyReleaseEvent(QKeyEvent *ev);
