@@ -12,12 +12,10 @@
 class player : public QObject, public QGraphicsItem
 {
     Q_OBJECT
-protected:
-    float x, y;
 public:
-    explicit player(float _x, float _y, QObject *parent = nullptr);
+    explicit player(float _x, float _y, double _salud, QObject *parent = nullptr);
     ~player();
-    float vx, vy, ax, ay;
+    float x, y, vx, vy, ax, ay;
     double salud;
     int armaID;
     QTimer *timer;
@@ -32,7 +30,6 @@ public:
     void velocidadesN();
     void velocidadesP();
     void posiciones();
-    void muerte();
 
 public slots:
     void animacion();

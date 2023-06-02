@@ -1,6 +1,6 @@
 ﻿#include "player.h"
 
-player::player(float _x, float _y, QObject *parent) : QObject(parent)
+player::player(float _x, float _y, double _salud, QObject *parent) : QObject(parent)
 {
     x = _x;
     y = _y;
@@ -9,7 +9,7 @@ player::player(float _x, float _y, QObject *parent) : QObject(parent)
     ax = 0;
     ay = 0;
     setPos(x,y);
-    salud = 100;
+    salud = _salud;
     armaID = 0;
 
     pixelX = 0;

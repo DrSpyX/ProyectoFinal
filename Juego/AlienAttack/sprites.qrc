@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>sprites/Astronauta.png</file>
+        <file>sprites/Fondo.png</file>
+        <file>sprites/Sierra.png</file>
     </qresource>
 </RCC>

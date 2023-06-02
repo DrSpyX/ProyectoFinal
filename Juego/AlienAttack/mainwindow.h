@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include <QPixmap>
 #include "player.h"
 
 QT_BEGIN_NAMESPACE
@@ -21,13 +22,19 @@ public:
 public slots:
     void animar();
     void cooldown();
+    void muerte();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* gameScene;
+    QPixmap *imagenFondo;
+    QGraphicsPixmapItem *itemFondo;
     QTimer *timerAnimar;
     QTimer *timerCooldown;
     player* P1;
+    QGraphicsRectItem* sierra;
+    QPixmap *imagenSierra;
+    QGraphicsPixmapItem *itemSierra;
 
     int cooldowndash;
 

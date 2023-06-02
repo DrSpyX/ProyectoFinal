@@ -14,16 +14,27 @@ MainWindow::MainWindow(QWidget *parent)
     moverdash=false;
     activardash=false;
 
-    gameScene= new QGraphicsScene(0,0,500,320);
+    gameScene = new QGraphicsScene(0,0,1900,950);
     ui->graphicsView->setScene(gameScene);
 
-    timerAnimar= new QTimer();
+    imagenFondo = new QPixmap(":/sprites/Fondo.png");
+
+    itemFondo = new QGraphicsPixmapItem(*imagenFondo);
+
+    gameScene->addItem(itemFondo);
+
+    itemFondo->setPos(0,0);
+    itemFondo->setZValue(-1);
+
+    timerAnimar = new QTimer();
 
     connect(timerAnimar,SIGNAL(timeout()),this,SLOT(animar()));
 
+    connect(timerAnimar,SIGNAL(timeout()),this,SLOT(muerte()));
+
     timerAnimar->start(16);
 
-    timerCooldown= new QTimer();
+    timerCooldown = new QTimer();
 
     connect(timerCooldown,SIGNAL(timeout()),this,SLOT(cooldown()));
 
@@ -31,8 +42,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     cooldowndash = 0;
 
-    P1 = new player(300,150);
+    P1 = new player(175,175,100);
     gameScene->addItem(P1);
+
+    sierra=new QGraphicsRectItem(-50,-50,100,100);
+    gameScene->addItem(sierra);
+    sierra->setPos(500,500);
 }
 
 MainWindow::~MainWindow()
@@ -44,12 +59,19 @@ void MainWindow::animar()
 {
     if(moverRx)
     {
-        if(P1->vx > 20)
-            P1->ax = 0;
+        if(P1->x>1725)
+        {
+            P1->vx = 0;
+        }
         else
-            P1->ax = 10;
+        {
+            if(P1->vx > 20)
+                P1->ax = 0;
+            else
+                P1->ax = 10;
+            P1->velocidadesP();
+        }
         P1->setDireccion(1);
-        P1->velocidadesP();
     }
     else
     {
@@ -61,12 +83,19 @@ void MainWindow::animar()
     }
     if(moverLx)
     {
-        if(P1->vx < -20)
-            P1->ax = 0;
+        if(P1->x<175)
+        {
+            P1->vx = 0;
+        }
         else
-            P1->ax = 10;
+        {
+            if(P1->vx < -20)
+                P1->ax = 0;
+            else
+                P1->ax = 10;
+            P1->velocidadesN();
+        }
         P1->setDireccion(2);
-        P1->velocidadesN();
     }
     else
     {
@@ -78,12 +107,19 @@ void MainWindow::animar()
     }
     if(moverDy)
     {
-        if(P1->vy > 20)
-            P1->ay = 0;
+        if(P1->y>775)
+        {
+            P1->vy = 0;
+        }
         else
-            P1->ay = 10;
+        {
+            if(P1->vy > 20)
+                P1->ay = 0;
+            else
+                P1->ay = 10;
+            P1->velocidadesP();
+        }
         P1->setDireccion(3);
-        P1->velocidadesP();
     }
     else
     {
@@ -95,12 +131,19 @@ void MainWindow::animar()
     }
     if(moverUy)
     {
-        if(P1->vy < -20)
-            P1->ay = 0;
+        if(P1->y<175)
+        {
+            P1->vy = 0;
+        }
         else
-            P1->ay = 10;
+        {
+            if(P1->vy < -20)
+                P1->ay = 0;
+            else
+                P1->ay = 10;
+            P1->velocidadesN();
+        }
         P1->setDireccion(4);
-        P1->velocidadesN();
     }
     else
     {
@@ -114,22 +157,22 @@ void MainWindow::animar()
     {
         if(P1->direccion==1)
         {
-            P1->ax = 200;
+            P1->ax = 100;
             P1->velocidadesP();
         }
         if(P1->direccion==2)
         {
-            P1->ax = 200;
+            P1->ax = 100;
             P1->velocidadesN();
         }
         if(P1->direccion==3)
         {
-            P1->ay = 200;
+            P1->ay = 100;
             P1->velocidadesP();
         }
         if(P1->direccion==4)
         {
-            P1->ay = 200;
+            P1->ay = 100;
             P1->velocidadesN();
         }
         activardash = false;
@@ -142,12 +185,12 @@ void MainWindow::cooldown()
     if(moverdash && cooldowndash==0)
     {
         activardash = true;
-        cooldowndash = 10;
+        cooldowndash = 15;
     }
     P1->posiciones();
     if(cooldowndash>0)
         cooldowndash--;
-    ui->lcdNumber->display(cooldowndash);
+    ui->lcdCooldown->display(cooldowndash);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *ev)
@@ -196,4 +239,19 @@ void MainWindow::keyReleaseEvent(QKeyEvent *ev)
     {
         moverdash=false;
     }
+}
+
+void MainWindow::muerte()
+{
+    if(P1->collidesWithItem(sierra))
+    {
+        P1->salud -= 1;
+    }
+    if(P1->salud <= 0)
+    {
+        P1->x = 175;
+        P1->y = 175;
+        P1->salud = 100;
+    }
+    ui->lcdSalud->display(P1->salud);
 }

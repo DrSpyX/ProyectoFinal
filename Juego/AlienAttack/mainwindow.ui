@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1907</width>
-    <height>989</height>
+    <width>1913</width>
+    <height>988</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,20 +17,30 @@
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>0</y>
-      <width>1891</width>
-      <height>951</height>
+      <width>1910</width>
+      <height>960</height>
      </rect>
     </property>
    </widget>
-   <widget class="QLCDNumber" name="lcdNumber">
+   <widget class="QLCDNumber" name="lcdCooldown">
     <property name="geometry">
      <rect>
-      <x>1820</x>
-      <y>900</y>
-      <width>64</width>
-      <height>41</height>
+      <x>1720</x>
+      <y>870</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdSalud">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>870</y>
+      <width>81</width>
+      <height>51</height>
      </rect>
     </property>
    </widget>
@@ -40,7 +50,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1907</width>
+     <width>1913</width>
      <height>21</height>
     </rect>
    </property>
