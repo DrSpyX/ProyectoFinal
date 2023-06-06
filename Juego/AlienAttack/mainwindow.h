@@ -5,7 +5,9 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QPixmap>
+#include <cmath>
 #include "player.h"
+#include "enemy.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,6 +34,7 @@ private:
     QTimer *timerAnimar;
     QTimer *timerCooldown;
     player* P1;
+    enemy* E1;
     QGraphicsRectItem* sierra;
     QPixmap *imagenSierra;
     QGraphicsPixmapItem *itemSierra;

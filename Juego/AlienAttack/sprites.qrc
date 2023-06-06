@@ -3,5 +3,6 @@
         <file>sprites/Astronauta.png</file>
         <file>sprites/Fondo.png</file>
         <file>sprites/Sierra.png</file>
+        <file>sprites/Alien.png</file>
     </qresource>
 </RCC>

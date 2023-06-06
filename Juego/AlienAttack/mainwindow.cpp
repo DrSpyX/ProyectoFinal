@@ -42,12 +42,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     cooldowndash = 0;
 
-    P1 = new player(175,175,100);
+    P1 = new player(175,175,30);
     gameScene->addItem(P1);
 
-    sierra=new QGraphicsRectItem(-50,-50,100,100);
-    gameScene->addItem(sierra);
-    sierra->setPos(500,500);
+    E1 = new enemy(1000,500,100);
+    gameScene->addItem(E1);
 }
 
 MainWindow::~MainWindow()
@@ -178,6 +177,46 @@ void MainWindow::animar()
         activardash = false;
     }
     P1->posiciones();
+
+    if(P1->collidesWithItem(E1))
+    {
+        if(P1->x - E1->x < -90)
+        {
+            P1->ax = 500;
+            P1->velocidadesN();
+        }
+        if(P1->x - E1->x > 90)
+        {
+            P1->ax = 500;
+            P1->velocidadesP();
+        }
+        if(P1->y - E1->y < -90)
+        {
+            P1->ay = 500;
+            P1->velocidadesN();
+        }
+        if(P1->y - E1->y > 90)
+        {
+            P1->ay = 500;
+            P1->velocidadesP();
+        }
+    }
+    if(P1->x>1725)
+    {
+        P1->vx = 0;
+    }
+    if(P1->x<175)
+    {
+        P1->vx = 0;
+    }
+    if(P1->y>775)
+    {
+        P1->vy = 0;
+    }
+    if(P1->y<175)
+    {
+        P1->vy = 0;
+    }
 }
 
 void MainWindow::cooldown()
@@ -243,15 +282,15 @@ void MainWindow::keyReleaseEvent(QKeyEvent *ev)
 
 void MainWindow::muerte()
 {
-    if(P1->collidesWithItem(sierra))
+    if(P1->collidesWithItem(E1))
     {
-        P1->salud -= 1;
+        P1->salud -= 5;
     }
     if(P1->salud <= 0)
     {
         P1->x = 175;
         P1->y = 175;
-        P1->salud = 100;
+        P1->salud = 30;
     }
     ui->lcdSalud->display(P1->salud);
 }
